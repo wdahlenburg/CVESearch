@@ -6,6 +6,7 @@ import (
 	"os"
 	"regexp"
 
+	"github.com/wdahlenburg/CVESearch/utils"
 	"github.com/wdahlenburg/CVESearch/utils/search"
 )
 
@@ -20,9 +21,12 @@ func main() {
 
 	validateCVE(cve)
 
-	apiKey := os.Getenv("GITHUB_KEY")
+	apiKeys := utils.ApiKeys{
+		GitHub: os.Getenv("GITHUB_KEY"),
+		GitLab: os.Getenv("GITLAB_KEY"),
+	}
 
-	search.New().Start(cve, apiKey, verbose)
+	search.New().Start(cve, apiKeys, verbose)
 }
 
 func validateCVE(cve string) {
