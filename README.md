@@ -7,5 +7,8 @@ There is currently support for:
 * Exploit Database
 * cvebase
 * GitHub
+* GitLab
 
 The GitHub search requires a personal access token is created and set to the GITHUB_KEY environment variable.
+
+GitLab allows searching of projects, but does not offer a global code search, so results will be limited. Set the GITLAB_KEY environment variable to add this API.
