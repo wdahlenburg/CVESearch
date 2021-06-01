@@ -5,7 +5,6 @@ Many vendors and references provide no proof-of-concept or working exploit for C
 
 There is currently support for:
 * Exploit Database
-* cvebase
 * GitHub
 * GitLab
 
