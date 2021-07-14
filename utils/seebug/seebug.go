@@ -57,16 +57,17 @@ func (s *Seebug) Start(cve string, verbose bool) {
 	})
 
 	if verbose {
-		log.Printf("Found %d result(s) in Seebug\n", len(results))
+		if len(results) == 0 {
+			log.Println("No results found on Seebug")
+			return
+		} else {
+			log.Printf("Found %d result(s) in Seebug\n", len(results))
+		}
 	}
 	s.prettyPrint(results)
 }
 
 func (s *Seebug) prettyPrint(results []string) {
-	if len(results) == 0 {
-		log.Println("No results found on Seebug")
-		return
-	}
 	for _, result := range results {
 		fmt.Printf("%s\n", result)
 	}

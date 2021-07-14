@@ -66,22 +66,24 @@ func (e *GitLab) Start(cve string, gitlabToken string, verbose bool) {
 	if err := json.Unmarshal([]byte(body), &response); err != nil {
 		log.Fatal(err)
 	}
-	if verbose {
-		log.Printf("Found %d results from GitLab\n", len(response))
-	}
+
 	for i := 0; i < len(response); i++ {
 		result := fmt.Sprintf("%s - %s", response[i].Name, response[i].Url)
 		results = append(results, result)
+	}
+
+	if verbose {
+		if len(results) == 0 {
+			log.Println("No results found on GitLab")
+		} else {
+			log.Printf("Found %d results from GitLab\n", len(response))
+		}
 	}
 
 	e.prettyPrint(results)
 }
 
 func (e *GitLab) prettyPrint(results []string) {
-	if len(results) == 0 {
-		log.Println("No results found on GitLab")
-		return
-	}
 	for _, result := range results {
 		fmt.Printf("%s\n", result)
 	}
