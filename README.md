@@ -7,6 +7,7 @@ There is currently support for:
 * Exploit Database
 * GitHub
 * GitLab
+* Seebug
 
 The GitHub search requires a personal access token is created and set to the GITHUB_KEY environment variable.
 
