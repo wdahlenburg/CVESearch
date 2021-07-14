@@ -33,6 +33,7 @@ func (g *GitHub) Start(cve string, gitKey string, verbose bool) {
 
 	g.startGithub(ctx, client, cve, verbose)
 	g.startNuclei(ctx, client, cve, verbose)
+	g.startMetasploit(ctx, client, cve, verbose)
 }
 
 func (g *GitHub) startGithub(ctx context.Context, client *github.Client, cve string, verbose bool) {
@@ -88,6 +89,39 @@ func (g *GitHub) startNuclei(ctx context.Context, client *github.Client, cve str
 			log.Println("No results found in Nuclei-Templates")
 		} else {
 			log.Printf("Found %d file(s) in Nuclei-Templates\n", len(results))
+		}
+	}
+
+	g.prettyPrint(results)
+}
+
+func (g *GitHub) startMetasploit(ctx context.Context, client *github.Client, cve string, verbose bool) {
+	var (
+		results []string
+	)
+	nCVE := strings.Split(strings.ToLower(cve), "cve-")[1]
+	// Query is: "20XX-YYYY in:file language:rb repo:rapid7/metasploit-framework"
+	query := fmt.Sprintf("%s in:file language:rb repo:rapid7/metasploit-framework", nCVE)
+	files, _, err := client.Search.Code(ctx, query, nil)
+	if err != nil {
+		if verbose {
+			log.Printf(err.Error())
+		}
+		return
+	}
+
+	for i := 0; i < *files.Total; i++ {
+		// Do a check to make sure it's in the 'cves' folder
+		if strings.Contains(*files.CodeResults[i].HTMLURL, "modules/exploits/") {
+			results = append(results, *files.CodeResults[i].HTMLURL)
+		}
+	}
+
+	if verbose {
+		if len(results) == 0 {
+			log.Println("No results found in the Metasploit Framework")
+		} else {
+			log.Printf("Found %d file(s) in Metasploit\n", len(results))
 		}
 	}
 
