@@ -6,6 +6,8 @@ Many vendors and references provide no proof-of-concept or working exploit for C
 There is currently support for:
 * Exploit Database
 * GitHub
+  * [Nuclei-Templates](https://github.com/projectdiscovery/nuclei-templates/)
+  * [Metasploit Framework](https://github.com/rapid7/metasploit-framework/) 
 * GitLab
 * Seebug
 
