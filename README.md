@@ -8,6 +8,7 @@ There is currently support for:
 * GitHub
   * [Nuclei-Templates](https://github.com/projectdiscovery/nuclei-templates/)
   * [Metasploit Framework](https://github.com/rapid7/metasploit-framework/) 
+  * [Trickest](https://github.com/trickest/cve)
 * GitLab
 * Seebug
 

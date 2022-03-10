@@ -34,6 +34,7 @@ func (g *GitHub) Start(cve string, gitKey string, verbose bool) {
 	g.startGithub(ctx, client, cve, verbose)
 	g.startNuclei(ctx, client, cve, verbose)
 	g.startMetasploit(ctx, client, cve, verbose)
+	g.startTrickest(ctx, client, cve, verbose)
 }
 
 func (g *GitHub) startGithub(ctx context.Context, client *github.Client, cve string, verbose bool) {
@@ -122,6 +123,35 @@ func (g *GitHub) startMetasploit(ctx context.Context, client *github.Client, cve
 			log.Println("No results found in the Metasploit Framework")
 		} else {
 			log.Printf("Found %d file(s) in Metasploit\n", len(results))
+		}
+	}
+
+	g.prettyPrint(results)
+}
+
+func (g *GitHub) startTrickest(ctx context.Context, client *github.Client, cve string, verbose bool) {
+	var (
+		results []string
+	)
+	// Query is: "CVE-20XX-YYYY in:file language:md repo:trickest/cve"
+	query := fmt.Sprintf("%s in:file language:md repo:trickest/cve", cve)
+	files, _, err := client.Search.Code(ctx, query, nil)
+	if err != nil {
+		if verbose {
+			log.Printf(err.Error())
+		}
+		return
+	}
+
+	for i := 0; i < *files.Total; i++ {
+		results = append(results, *files.CodeResults[i].HTMLURL)
+	}
+
+	if verbose {
+		if len(results) == 0 {
+			log.Println("No results found in the Trickest")
+		} else {
+			log.Printf("Found %d file(s) in Trickest\n", len(results))
 		}
 	}
 
